@@ -1,0 +1,148 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "XMeme APIs",
+    "description": ""
+  },
+  "host": "localhost:8081",
+  "basePath": "/",
+  "tags": [],
+  "schemes": ["http"],
+  "consumes": [],
+  "produces": [],
+  "paths": {
+    "/memes": {
+      "post": {
+        "tags": ["User"],
+        "description": "Saves the given meme with Name, URL and Caption",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Details of the meme which needs to be created",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Meme"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "409": {
+            "description": "Duplicate Entry"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "description": "Returns atmost 100 recent memes ",
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/memes/{id}": {
+      "get": {
+        "tags": ["User"],
+        "description": "Fetches the details of the given meme ID",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID of the meme to fetch details for",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "patch": {
+        "tags": ["User"],
+        "description": "Updates the given meme's URL/ Caption or both",
+        "produces": ["application/json"],
+        "parameters": [ 
+          {
+          "in": "path",
+          "name": "id",
+          "description": "ID of the meme to fetch details for",
+          "required": true
+        },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Meme which needs to be updated",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/MemeUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "409": {
+            "description": "Duplicate Entry"
+          },
+          "422": {
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Meme": {
+      "required": ["name", "url", "caption"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "John doe"
+        },
+        "url": {
+          "type": "string",
+          "example": "https://www.todaysparent.com/wp-content/uploads/2017/06/when-your-kid-becomes-a-meme.jpg"
+        },
+        "caption": {
+          "type": "string",
+          "example": "A super cool caption"
+        }
+      }
+    },
+  "MemeUpdate": {
+    "properties": {
+      "url": {
+        "type": "string",
+        "example": "https://www.todaysparent.com/wp-content/uploads/2017/06/when-your-kid-becomes-a-meme.jpg"
+      },
+      "caption": {
+        "type": "string",
+        "example": "A super cool updated caption"
+      }
+    }
+  }
+}
+}
